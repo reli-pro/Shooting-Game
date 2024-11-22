@@ -20,7 +20,7 @@ jobs:
         with:
           nuitka-version: main
           script-name: game.py
-          onefile: true
+          mode: onefile
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
