@@ -7,7 +7,7 @@ class ShootingGame(tk.Frame):
         super().__init__(master)
 
         self.master.geometry("133x190")
-        self.master.title("Shooting Game - Rev3 Version 1.0.0")
+        self.master.title("Shooting Game - ver 1.1.1")
 
         # self.pack()
 
