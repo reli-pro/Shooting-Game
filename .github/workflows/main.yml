@@ -22,9 +22,10 @@ jobs:
           script-name: game.py
           mode: onefile
           output-dir: build
+          extra-optoins: --output-filename=Shooting-Game.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: exe
-          path: build/Shooting-Game-1.1.1.exe
+          path: build/game.exe
