@@ -24,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip "poetry<1.9"
           poetry install --only main, publish
 
-      - name: Create executable file with pyinstall adn zip
+      - name: Create executable file with pyinstall add zip
         run: |
           poetry run pyinstaller game.py --name Shooting-Game --onefile --noconsole --add-data "assets;assets"
           pushd dist
@@ -32,9 +32,18 @@ jobs:
 
       - name: Upload a executable file to GitHub Releases
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
             dist/Shooting-Game_windows.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Shooting-Game
+          path: dist/Shooting-Game_windows.zip
+
 
 
 #name: Compile Python
