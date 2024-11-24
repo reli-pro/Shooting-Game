@@ -22,7 +22,6 @@ jobs:
           script-name: game.py
           mode: onefile
           output-dir: build
-          enable-plugin: tkinter
           include-package: uvicorn
 
       - name: Upload Artifact
