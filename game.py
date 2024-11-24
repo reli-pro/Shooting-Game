@@ -1,21 +1,22 @@
 import tkinter as tk
 import tkinter.messagebox as msb
-
+import os
+import sys
 
 class ShootingGame(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
 
         self.master.geometry("133x190")
-        self.master.title("Shooting Game - ver 1.1.1")
+        self.master.title("Shooting Game - ver 1.1.2")
 
         # self.pack()
 
         self.create_canvas()
-        self.bg = self.pic(Path=".\\Assets\\images\\bg.png", x=0, y=0, tag="bg")
-        self.fighter = self.pic(Path=".\\Assets\\images\\fighter.png", x=0, y=150, tag="fighter")
-        self.enemy = self.pic(Path=".\\Assets\\images\\ennemy.png", x=0, y=0, tag="enemy")
-        self.beam = self.pic(Path=".\\Assets\\images\\beam.png", x=0, y=-50, tag="beam")
+        self.bg = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\bg.png"), x=0, y=0, tag="bg")
+        self.fighter = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\fighter.png"), x=0, y=150, tag="fighter")
+        self.enemy = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\ennemy.png"), x=0, y=0, tag="enemy")
+        self.beam = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\beam.png"), x=0, y=-50, tag="beam")
         self.fighter_x = 0
         self.master.bind("<Key>", self.KeyEv)
 
@@ -35,6 +36,12 @@ class ShootingGame(tk.Frame):
         self.enemy_y = 0
 
         self.move_enemy()
+
+    def resource_path(relative_path):
+        """Nuitkaビルド時にも正しいパスを取得"""
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
+
 
     def create_canvas(self):
         self.frame_img = tk.Frame(self.master, width=133, height=190, bg="White")
