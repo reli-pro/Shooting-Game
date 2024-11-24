@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  build-and-release-windows:
     runs-on: windows-latest
 
     steps:
@@ -31,17 +31,54 @@ jobs:
           version=$(python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
           echo "version=$version" >> $GITHUB_ENV
 
-      - name: Create executable file with pyinstaller and zip
+      - name: Create executable file for Windows with pyinstaller and zip
         run: |
           pyinstaller game.py --name Shooting-Game --onefile --noconsole --add-data "assets;assets"
           pushd dist
           
-          # バージョン番号を使ってZIPファイル名を動的に作成
+          # バージョン番号を使ってWindows用のZIPファイル名を動的に作成
           zip_file_name="Shooting-Game_windows_${{ env.version }}.zip"
           Compress-Archive -Path Shooting-Game.exe -DestinationPath $zip_file_name
 
-      - name: Upload an executable file to GitHub Releases
+      - name: Upload Windows executable file to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/Shooting-Game_windows_${{ env.version }}.zip
+
+  build-and-release-mac:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install Poetry and dependencies
+        run: |
+          python -m pip install pyinstaller
+          pip install toml
+
+      - name: Get version from pyproject.toml
+        id: version
+        run: |
+          version=$(python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Create executable file for Mac with pyinstaller and zip
+        run: |
+          pyinstaller game.py --name Shooting-Game --onefile --noconsole --add-data "assets:assets"
+          pushd dist
+          
+          # バージョン番号を使ってMac用のZIPファイル名を動的に作成
+          zip_file_name="Shooting-Game_mac_${{ env.version }}.zip"
+          zip -r $zip_file_name Shooting-Game.app
+
+      - name: Upload Mac executable file to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/Shooting-Game_mac_${{ env.version }}.zip
