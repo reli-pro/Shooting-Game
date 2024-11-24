@@ -12,10 +12,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4  # 修正されたアクション名
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5  # 修正されたアクション名
         with:
           python-version: 3.11
 
@@ -24,58 +24,14 @@ jobs:
           python -m pip install --upgrade pip "poetry<1.9"
           poetry install --only main, publish
 
-      - name: Create executable file with pyinstall add zip
+      - name: Create executable file with pyinstall and zip
         run: |
           poetry run pyinstaller game.py --name Shooting-Game --onefile --noconsole --add-data "assets;assets"
           pushd dist
           Compress-Archive -DestinationPath Shooting-Game_windows.zip
 
-      - name: Upload a executable file to GitHub Releases
+      - name: Upload an executable file to GitHub Releases
         uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
             dist/Shooting-Game_windows.zip
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Shooting-Game
-          path: dist/Shooting-Game_windows.zip
-
-
-
-#name: Compile Python
-#on: [push]
-
-#1jobs:
-#  build:
-#    runs-on: windows-latest
-#
-#    steps:
-#     - name: Checkout repository
-#        uses: actions/checkout@v3
-#
-#      - name: Setup Python
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: '3.x'
-#          architecture: 'x64'
-#
-#      - name: Compile with Nuitka
-#        uses: Nuitka/Nuitka-Action@main
-#        with:
-#          nuitka-version: main
-#          script-name: game.py
-#          mode: onefile
-#          output-dir: build
-#          include-data-files: "assets/images/*=./assets/images/"
-#          enable-plugin: tk-inter
-#
-#      - name: Upload Artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: exe
-#          path: build\\game.exe
-#
