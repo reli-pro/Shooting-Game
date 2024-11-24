@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shooting-game"
-version = "1.1.2"
+version = "1.2.0"
 description = "This is a Shooting-Game"
 authors = ["sora81dev"]
 license = "©2024 sora81dev"
