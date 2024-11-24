@@ -28,8 +28,9 @@ jobs:
       - name: Get version from pyproject.toml
         id: version
         run: |
-          version=$(python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
-          echo "version=$version" >> $GITHUB_ENV
+          $version = python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])"
+          echo "version=$version" >> $GITHUB_ENV  # PowerShellではechoで環境変数を設定
+
 
       - name: Create executable file for Windows with pyinstaller and zip
         run: |
