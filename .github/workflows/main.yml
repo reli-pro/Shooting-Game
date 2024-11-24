@@ -22,7 +22,7 @@ jobs:
           script-name: game.py
           mode: onefile
           output-dir: build
-          include-data-files: "assets/images/*=assets/images"
+          include-data-files: "assets/images/*=assets/images/"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
