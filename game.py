@@ -13,10 +13,10 @@ class ShootingGame(tk.Frame):
         # self.pack()
 
         self.create_canvas()
-        self.bg = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\bg.png"), x=0, y=0, tag="bg")
-        self.fighter = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\fighter.png"), x=0, y=150, tag="fighter")
-        self.enemy = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\ennemy.png"), x=0, y=0, tag="enemy")
-        self.beam = self.pic(Path=lambda:self.resource_path(".\\Assets\\images\\beam.png"), x=0, y=-50, tag="beam")
+        self.bg = self.pic(Path=lambda:self.resource_path("Assets\\images\\bg.png"), x=0, y=0, tag="bg")
+        self.fighter = self.pic(Path=lambda:self.resource_path("Assets\\images\\fighter.png"), x=0, y=150, tag="fighter")
+        self.enemy = self.pic(Path=lambda:self.resource_path("Assets\\images\\ennemy.png"), x=0, y=0, tag="enemy")
+        self.beam = self.pic(Path=lambda:self.resource_path("Assets\\images\\beam.png"), x=0, y=-50, tag="beam")
         self.fighter_x = 0
         self.master.bind("<Key>", self.KeyEv)
 
