@@ -1,32 +1,72 @@
-name: Compile Python
-on: [push]
+name: publish executable file to release page
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  build-and-release:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: ations/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: ations/setup-python@v5
         with:
-          python-version: '3.x'
-          architecture: 'x64'
+          python-version: 3.11
 
-      - name: Compile with Nuitka
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: game.py
-          mode: onefile
-          output-dir: build
-          include-data-files: "assets/images/*=./assets/images/"
-          enable-plugin: tk-inter
+      - name: Install Poetry and dependencies
+        run: |
+          python -m pip install --upgrade pip "poetry<1.9"
+          poetry install --only main, publish
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      - name: Create executable file with pyinstall adn zip
+        run: |
+          poetry run pyinstaller game.py --name Shooting-Game --onefile --noconsole --add-data "assets;assets"
+          pushd dist
+          Compress-Archive -DestinationPath Shooting-Game_windows.zip
+
+      - name: Upload a executable file to GitHub Releases
+        uses: softprops/action-gh-release@v2
         with:
-          name: exe
-          path: build\\game.exe
+          files: |
+            dist/Shooting-Game_windows.zip
+
+
+#name: Compile Python
+#on: [push]
+
+#1jobs:
+#  build:
+#    runs-on: windows-latest
+#
+#    steps:
+#     - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.x'
+#          architecture: 'x64'
+#
+#      - name: Compile with Nuitka
+#        uses: Nuitka/Nuitka-Action@main
+#        with:
+#          nuitka-version: main
+#          script-name: game.py
+#          mode: onefile
+#          output-dir: build
+#          include-data-files: "assets/images/*=./assets/images/"
+#          enable-plugin: tk-inter
+#
+#      - name: Upload Artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: exe
+#          path: build\\game.exe
+#

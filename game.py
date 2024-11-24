@@ -1,5 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as msb
+import sys
+import os
 
 class ShootingGame(tk.Frame):
     def __init__(self, master=None):
@@ -11,10 +13,10 @@ class ShootingGame(tk.Frame):
         # self.pack()
 
         self.create_canvas()
-        self.bg = self.pic(Path=".\\Assets\\images\\bg.png", x=0, y=0, tag="bg")
-        self.fighter = self.pic(Path=".\\Assets\\images\\fighter.png", x=0, y=150, tag="fighter")
-        self.enemy = self.pic(Path=".\\Assets\\images\\ennemy.png", x=0, y=0, tag="enemy")
-        self.beam = self.pic(Path=".\\Assets\\images\\beam.png", x=0, y=-50, tag="beam")
+        self.bg = self.pic(Path=ShootingGame.resource_path("Assets\\images\\bg.png"), x=0, y=0, tag="bg")
+        self.fighter = self.pic(Path=ShootingGame.resource_path("Assets\\images\\fighter.png"), x=0, y=150, tag="fighter")
+        self.enemy = self.pic(Path=ShootingGame.resource_path("Assets\\images\\ennemy.png"), x=0, y=0, tag="enemy")
+        self.beam = self.pic(Path=ShootingGame.resource_path("Assets\\images\\beam.png"), x=0, y=-50, tag="beam")
         self.fighter_x = 0
         self.master.bind("<Key>", self.KeyEv)
 
@@ -34,6 +36,14 @@ class ShootingGame(tk.Frame):
         self.enemy_y = 0
 
         self.move_enemy()
+
+    @staticmethod
+    def resource_path(relative_path):
+        """PyInstallerの_onefile対応"""
+        if hasattr(sys, "_MEIPASS"):
+            return os.path.join(sys._MEIPASS, relative_path)
+        
+        return os.path.join(os.path.abspath("."), relative_path)
 
     def create_canvas(self):
         self.frame_img = tk.Frame(self.master, width=133, height=190, bg="White")
